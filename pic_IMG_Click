@@ -1,0 +1,12 @@
+Private Sub pic_IMG_Click(sender As Object, e As EventArgs) Handles pic_IMG.Click
+        OpenFileDialog1.InitialDirectory = System.Reflection.Assembly.GetExecutingAssembly.Location
+        OpenFileDialog1.FileName = Nothing
+        OpenFileDialog1.Filter = "IMAGEMS (*.jpg)|*.png|*.gif" & "All files|*.*"
+        If OpenFileDialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
+            pic_IMG.Image = Image.FromFile(OpenFileDialog1.FileName)
+            txtLoja1.Text = OpenFileDialog1.FileName
+
+            Tim_IMG.Enabled = True
+
+        End If
+    End Sub
