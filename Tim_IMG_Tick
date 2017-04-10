@@ -1,0 +1,13 @@
+Private Sub Tim_IMG_Tick(sender As Object, e As EventArgs) Handles Tim_IMG.Tick
+
+        Tim_IMG.Enabled = False
+        If txtLoja1.Text = Nothing Then Exit Sub
+
+        Try
+            pic_IMG.BorderStyle = 0
+            pic_IMG.Image = Image.FromFile(txtLoja1.Text)
+            pic_IMG.SizeMode = PictureBoxSizeMode.StretchImage
+        Catch ex As Exception
+
+        End Try
+    End Sub
