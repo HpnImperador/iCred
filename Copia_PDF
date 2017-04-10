@@ -1,0 +1,13 @@
+Function Copia_PDF(ByVal de_Onde, ByVal para_Onde) As Boolean
+        Dim FileToCopy As String
+        Dim NewCopy As String
+
+        FileToCopy = de_Onde
+        NewCopy = para_Onde
+
+        If System.IO.File.Exists(FileToCopy) = True Then
+            System.IO.File.Copy(FileToCopy, NewCopy)
+
+            Return True
+        End If
+    End Function
