@@ -1,0 +1,65 @@
+Imports System.IO
+
+Friend Class FileManager
+    Friend Shared Sub CopyFile(ByVal sourcePath As String, ByVal destinationPath As String)
+        Dim objImpersonator As Impersonator = New Impersonator()
+        If (Not FileManager.Impersonate(objImpersonator)) Then
+            Throw New ApplicationException("share user not found.")
+        Else
+            If (File.Exists(destinationPath)) Then
+                File.Delete(destinationPath)
+            End If
+            File.Copy(sourcePath, destinationPath)
+            objImpersonator.UndoImpersonation()
+            Return
+        End If
+    End Sub
+
+    Friend Shared Sub CreateDirectory(ByVal filePath As String)
+        Dim objImpersonator As Impersonator = New Impersonator()
+        If (Not FileManager.Impersonate(objImpersonator)) Then
+            Throw New ApplicationException("share user not found.")
+        Else
+            If (Directory.Exists(filePath)) Then
+                Directory.Delete(filePath, True)
+            End If
+            Directory.CreateDirectory(filePath)
+            objImpersonator.UndoImpersonation()
+            Return
+        End If
+    End Sub
+
+    Friend Shared Sub CreateFile(ByVal filePath As String, ByVal fileBytes As Byte())
+        Dim objImpersonator As Impersonator = New Impersonator()
+        If (Not FileManager.Impersonate(objImpersonator)) Then
+            Throw New ApplicationException("share user not found.")
+        Else
+            If (File.Exists(filePath)) Then
+                File.Delete(filePath)
+            End If
+            File.WriteAllBytes(filePath, fileBytes)
+            objImpersonator.UndoImpersonation()
+            Return
+        End If
+    End Sub
+
+    Private Shared Function Impersonate(ByVal objImpersonator As Impersonator) As Boolean
+        Dim flag As Boolean = objImpersonator.ImpersonateValidUser("YourFileSystemUser", "YourFileSystemDomain", "YourFileSystemPwd")
+        Return flag
+    End Function
+
+    Friend Shared Function ReadFileBytes(ByVal filePath As String) As Byte()
+        Dim objImpersonator As Impersonator = New Impersonator()
+        Dim fileBytes As Byte() = Nothing
+        If (Not FileManager.Impersonate(objImpersonator)) Then
+            Throw New ApplicationException("share user not found.")
+        Else
+            If (File.Exists(filePath)) Then
+                fileBytes = File.ReadAllBytes(filePath)
+            End If
+            objImpersonator.UndoImpersonation()
+            Dim numArray As Byte() = fileBytes
+            Return numArray
+        End If
+    End Function
+End Class
